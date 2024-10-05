@@ -1,7 +1,7 @@
 pipeline {
     agent any
     tools {
-        maven 'M2_HOME'  // Make sure Maven is installed and configured in Jenkins
+        maven 'M2_HOME'  // Ensure Maven is installed and configured in Jenkins
     }
     stages {
         stage('Git') {
@@ -16,18 +16,11 @@ pipeline {
                 sh 'mvn clean install'
             }
         }
-        stage('Maven Test') {
-            steps {
-                // Run tests using Maven
-                sh 'mvn test'
-            }
-        }
     }
     post {
         always {
-            // Archive results even if build fails
+            // Archive results even if the build fails
             archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
-            junit '**/target/surefire-reports/*.xml'
         }
     }
     options {
