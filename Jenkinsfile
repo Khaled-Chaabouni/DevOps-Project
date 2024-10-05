@@ -1,20 +1,36 @@
 pipeline {
     agent any
+    tools {
+        maven 'Maven'  // Make sure Maven is installed and configured in Jenkins
+    }
     stages {
-        stage('Build') {
+        stage('Git') {
             steps {
-                echo 'Building...'
+                // Checkout the Git repo
+                git url: 'https://github.com/Khaled-Chaabouni/SpringAOP.git', branch: 'main'
             }
         }
-        stage('Test') {
+        stage('Maven Build') {
             steps {
-                echo 'Testing...'
+                // Build the project using Maven
+                sh 'mvn clean install'
             }
         }
-        stage('Deploy') {
+        stage('Maven Test') {
             steps {
-                echo 'Deploying...'
+                // Run tests using Maven
+                sh 'mvn test'
             }
         }
+    }
+    post {
+        always {
+            // Archive results even if build fails
+            archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
+            junit '**/target/surefire-reports/*.xml'
+        }
+    }
+    options {
+        timestamps()  // To show time details
     }
 }
