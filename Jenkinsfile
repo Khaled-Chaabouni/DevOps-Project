@@ -1,7 +1,7 @@
 pipeline {
     agent any
     tools {
-        maven 'Maven'  // Make sure Maven is installed and configured in Jenkins
+        maven 'M2_HOME'  // Make sure Maven is installed and configured in Jenkins
     }
     stages {
         stage('Git') {
